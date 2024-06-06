@@ -6,13 +6,6 @@ const App = ({ placeholder }) => {
 	const editor = useRef(null);
   const [data, setData] = useState('');
 
-	const config = useMemo(() => ({
-			readonly: false, // all options from https://xdsoft.net/jodit/docs/,
-			placeholder: placeholder || 'Start typings...'
-		}),
-		[placeholder]
-	);
-
   const copyStringToClipboard = function(str) {
     var el = document.createElement("textarea");
     el.value = str;
@@ -52,43 +45,44 @@ const App = ({ placeholder }) => {
     return optionGroupElement;
   }
   const buttons = [
-    "undo",
-    "redo",
+    // "undo",
+    // "redo",
     "|",
     "bold",
-    "strikethrough",
-    "underline",
     "italic",
+    "underline",
+    "strikethrough",
     "|",
     "superscript",
     "subscript",
     "|",
-    "align",
+    "paragraph",
+    "fontsize",
+    "font",
     "|",
     "ul",
     "ol",
-    "outdent",
-    "indent",
+    "align",
     "|",
-    "font",
-    "fontsize",
+    // "outdent",
+    // "indent",
+    // "|",
     "brush",
-    "paragraph",
     "|",
     "image",
     "link",
-    "table",
+    // "table",
     "|",
-    "hr",
+    // "hr",
     "eraser",
-    "copyformat",
+    // "copyformat",
     "|",
-    "fullsize",
-    "selectall",
-    "print",
-    "|",
-    "source",
-    "|",
+    // "fullsize",
+    // "selectall",
+    // "print",
+    // "|",
+    // "source",
+    // "|",
     {
       name: "insertMergeField",
       tooltip: "Insert Merge Field",
@@ -135,6 +129,7 @@ const App = ({ placeholder }) => {
   const editorConfig = {
     readonly: false,
     toolbar: true,
+    placeholder: placeholder || 'Start typings...',
     spellcheck: true,
     language: "en",
     toolbarButtonSize: "medium",
@@ -153,17 +148,23 @@ const App = ({ placeholder }) => {
     height: 842,
   };
 
+  const handleSend = () => {
+    const editorContent = editor.current.value;
+    console.log("Editor Content:", editorContent);
+    // Here you can send the content to a server or perform other actions
+  };
 
 	return (
-    <div className="App" style={{ maxWidth: editorConfig.width, margin: "0 auto" }}>
+    <div className="App" style={{ maxWidth: editorConfig.width, margin: "0 auto", paddingTop:'40px' }}>
 		<JoditEditor
 			ref={editor}
 			value={data}
-			config={config}
+			config={editorConfig}
 			tabIndex={1} // tabIndex of textarea
-			onBlur={newContent => setData(newContent)} // preferred to use only this option to update the content for performance reasons
-      onChange={value => setData(value)}
+			// onBlur={newContent => setData(newContent)} // preferred to use only this option to update the content for performance reasons
+      // onChange={value => setData(value)}
 		/>
+     <button onClick={handleSend} style={{ marginTop: '20px' }}>Send</button>
     </div>
 	);
 };
